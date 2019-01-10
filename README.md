@@ -12,35 +12,28 @@
 * [heroku - ulgy code](https://eivy-lab-13-ulgy.herokuapp.com/) (when applicable)
 
 #### Documentation
-* [swagger](http://xyz.com) (API assignments only)
-* [jsdoc](http://xyz.com) (All assignments)
+* [swagger](./docs/swagger.json) (API assignments only)
+* [jsdoc](./docs/jsdoc.md) (All assignments)
 
 ### Modules
-#### `modulename.js`
+#### `app.js`
 ##### Exported Values and Methods
-
-###### `foo(thing) -> string`
-Usage Notes or examples
-
-###### `bar(array) -> array`
-Usage Notes or examples
+* app.js runs an api server that can GET, POST, PUT, and DELETE to two paths: /categories and /products. It sores the entries in both a local database and a mongo database
 
 ### Setup
 #### `.env` requirements
-* `PORT` - Port Number
-* `MONGODB_URI` - URL to the running mongo instance/db
+* `PORT` - 8080
+* `MONGODB_URI` - `mongodb://localhost:27017`
 
 #### Running the app
-* `npm start`
-* Endpoint: `/foo/bar/`
-  * Returns a JSON object with abc in it.
-* Endpoint: `/bing/zing/`
-  * Returns a JSON object with xyz in it.
+* run `npm start` - this will strat the index file which will run the app.js
+* in a separate terminal, run a mongo DB on port 27017 
+* Endpoint: `/api/v1/categories`
+  * Returns a JSON object with categories in it.
+* Endpoint: `/api/v1/products`
+  * Returns a JSON object with products in it
   
 #### Tests
-* How do you run tests?
-* What assertions were made?
-* What assertions need to be / should be made?
+* to test, run `npm test` or click on the travis link at the top of the page
+* I asserted that all paths and functions work with both the ulgy and pretty code
 
-#### UML
-Link to an image of the UML for your application and response to events
