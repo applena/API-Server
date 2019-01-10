@@ -12,7 +12,7 @@ const router = express.Router();
 
 /** 
  * mongo schema that verifies the user input and formats it correctly
- * @param {object} object user entered entry
+ * @param {Object} object user entered entry
 */
 
 let productsSchema = mongoose.model('products', mongoose.Schema({
@@ -24,7 +24,8 @@ let productsSchema = mongoose.model('products', mongoose.Schema({
 
 /** 
  * Products class with methods for getting all db entries, getting an entry by id, posting a new entry, put changes and entry, and delete removes an entry by id
- * @param {id, object} object user entered entry
+ * @param {Object} object user entered entry
+ * @param {string} id the uuid of the product
 */
 class Products {
 
@@ -64,7 +65,8 @@ let categoriesSchema = {
 
 /** 
  * Products class with methods for getting all db entries, getting an entry by id, posting a new entry, put changes and entry, and delete removes an entry by id
- * @param {id, object} object user entered entry
+ * @param {Object} object user entered entry
+ * @param {string} id the uuid of the product
 */
 
 class Categories {
@@ -157,7 +159,7 @@ router.get('/api/v1/products/:id', (request,response,next) => {
 /** 
 * updates a record in the products db 
 * @param {string} id the id of the record
-* @param {object} json object to be updated
+* @param {Object} json object to be updated
 */
 
 router.put('/api/v1/products/:id', (request,response,next) => {
@@ -224,7 +226,7 @@ router.get('/api/v1/categories/:id', (request,response,next) => {
 /** 
 * updates a record in the categories db 
 * @param {string} id the id of the record
-* @param {object} json object to be updated
+* @param {Object} json object to be updated
 */
 
 router.put('/api/v1/categories/:id', (request,response,next)=> {
@@ -265,7 +267,7 @@ app.use(errorHandler);
 
 /** 
 * runs a function to make sure that the data entered matches the format of database 
-* @param {object} json the json object to be added to the db
+* @param {Object} json the json object to be added to the db
 */
 
 function sanitize (data) {
