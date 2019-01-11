@@ -58,7 +58,7 @@ function handlePut(request,response,next) {
 function handleDelete(request,response,next) {
   // Expects no return value (the resource should be gone)
   request.model.delete(request.params.id)
-    .then( result => response.status(200).json(result[0]) )
+    .then( result => response.status(200).json({status: 'success'}) )
     .catch( next );
 }
 
