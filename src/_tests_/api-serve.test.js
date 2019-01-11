@@ -1,121 +1,89 @@
 'use strict';
 
-const supergoose = require('./supergoose');
-let Categories = require('../models/categories');
-let Products = require('../models/products');
+const rootDir = process.cwd();
+const supergoose = require('./supergoose.js');
+const {server} = require(`${rootDir}/src/app.js`);
+const mockRequest = supergoose.server(server);
 
 beforeAll(supergoose.startDB);
 afterAll(supergoose.stopDB);
 
 describe('api server', () => {
-  describe('categories', () => {
 
-    it('can post()', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let record = categories.post(object);
-      expect(record.name).toEqual(object.name);
-    });
+  it('should respond with a 404 on an invalid route', () => {
 
-    it('can get()', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      categories.post(object);
-      categories.post(nextObj);
-      let record = categories.get();
-      expect(record.length).toEqual(2);
-    });
+    return mockRequest
+      .get('/foo')
+      .then(results => {
+        expect(results.status).toBe(404);
+      });
 
-    it('can get(id)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      let item1 = categories.post(object);
-      categories.post(nextObj);
-      let records = categories.get(item1.id);
-      console.log(records, item1, item1.id);
-      expect(records[0].name).toEqual('boo');
-    });
-
-    it('can put(id, record)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      let item1 = categories.post(object);
-      categories.post(nextObj);
-      let records = categories.put(item1.id, {name:'billy'});
-      expect(records.name).toEqual('billy');
-    });
-
-    it('can delete(id)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      categories.post(nextObj);
-      let item = categories.post(object);
-      let record = categories.delete(item.id);
-      expect(record.length).toEqual(1);
-    });
   });
 
-  describe('products', () => {
-    it('can get()', () => {
-      let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
-      products.post(obj)
-        .then(record => {
-          products.get()
-            .then(arr => {
-              expect(arr[0].name).toEqual('Ilya');
-            });
-        });
-    });
+  it('should respond with a 404 on an invalid method', () => {
 
-    it('can get(id)', () => {
-      let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
-      let entry = products.post(obj)
-        .then(record => {
-          products.get(entry.id)
-            .then(arr => {
-              expect(arr[0].name).toEqual('Ilya');
-            });
-        });
-    });
+    return mockRequest
+      .post('/api/v1/notes/12')
+      .then(results => {
+        expect(results.status).toBe(404);
+      });
 
-    it('can post(entry)', () => {
-      let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
-      return products.post(obj)
-        .then(record => {
-          expect(record.name).toEqual('Ilya');
-        });
-    });
-
-    it('can put(id, entry)', () => {
-      let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let nextObj = {name: 'Sue', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
-      let entry = products.post(obj)
-        .then(record => {
-          products.put(entry.id, nextObj)
-            .then(newRecord => {
-              expect(newRecord.name).toEqual('Sue');
-            });
-        });
-    });
-
-    it('delete(id)', () => {
-      let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
-      let entry = products.post(obj)
-        .then(record => {
-          products.delete(entry.id)
-            .then(data => {
-              expect(data.length).toEqual(0);
-            });
-        });
-    });
   });
+
+  it('should respond properly on request to /api/v1/categories', () => {
+
+    return mockRequest
+      .get('/api/v1/categories')
+      .then(results => {
+        expect(results.status).toBe(200);
+      });
+
+  });
+
+  it('should be able to post to /api/v1/categories', () => {
+
+    let obj = {name:'test'};
+
+    return mockRequest
+      .post('/api/v1/categories')
+      .send(obj)
+      .then(results => {
+        expect(results.status).toBe(200);
+        expect(results.body.title).toEqual(obj.title);
+      });
+
+  });
+
+  it('should be able to post to /api/v1/products', ()  => {
+
+    let obj = {name:'John', display_name:'R'};
+
+    return mockRequest
+      .post('/api/v1/products')
+      .send(obj)
+      .then(results => {
+        expect(results.status).toBe(200);
+        expect(results.body.team).toEqual(obj.team);
+      });
+
+  });
+
+
+  it('following a post to products, should find a single record', () => {
+
+    let obj = {name:'John', display_name:'R'};
+
+    return mockRequest
+      .post('/api/v1/products')
+      .send(obj)
+      .then(results => {
+        return mockRequest.get(`/api/v1/products/${results.body._id}`)
+          .then(list => {
+            expect(list.status).toBe(200);
+            expect(list.body.categroies).toEqual(obj.categroies);
+          });
+      });
+
+  });
+
 });
