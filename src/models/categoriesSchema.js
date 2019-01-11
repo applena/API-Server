@@ -16,14 +16,14 @@ categories.virtual('products', {
   justsOne: false,
 });
 
-// //hook or middleware for mongoose
-// products.schema.pre('find', function() {
-//   //when I call a .find, this will run before the querry
-//   try {
-//     this.populate('products');//this will populate the virtual products
-//   }
-//   catch(errors) { console.lgo('Find Error', errors);}
-// });
+//hook or middleware for mongoose
+categories.pre('find', function() {
+  //when I call a .find, this will run before the querry
+  try {
+    this.populate('products');//this will populate the virtual products
+  }
+  catch(errors) { console.lgo('Find Error', errors);}
+});
 
 module.exports = mongoose.model('categories', categories);
 
