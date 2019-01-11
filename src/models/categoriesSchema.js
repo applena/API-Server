@@ -13,7 +13,7 @@ categories.virtual('products', {
   ref: 'products',
   localField: 'name', 
   foreignField: 'category', 
-  justsOne: false,
+  justOne: false,
 });
 
 //hook or middleware for mongoose
@@ -22,7 +22,7 @@ categories.pre('find', function() {
   try {
     this.populate('products');//this will populate the virtual products
   }
-  catch(errors) { console.lgo('Find Error', errors);}
+  catch(errors) { console.log('Find Error', errors);}
 });
 
 module.exports = mongoose.model('categories', categories);
