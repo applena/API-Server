@@ -2,6 +2,7 @@
 
 module.exports = (req, res, next) => {
   let modelName = req.params.model;
-  req.model = require(`../models/${modelName}.js`);
+  // console.log(`loading ../models/${modelName}.js`);
+  req.model = require(`../models/${modelName}Model.js`);
   next();
 };
