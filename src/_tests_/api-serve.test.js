@@ -1,8 +1,8 @@
 'use strict';
 
 const supergoose = require('./supergoose');
-let Categories = require('../models/categories');
-let Products = require('../models/products');
+let categories = require('../models/categoriesModel');
+let products = require('../models/productsModel');
 
 beforeAll(supergoose.startDB);
 afterAll(supergoose.stopDB);
@@ -10,59 +10,79 @@ afterAll(supergoose.stopDB);
 describe('api server', () => {
   describe('categories', () => {
 
-    it('can post()', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let record = categories.post(object);
-      expect(record.name).toEqual(object.name);
+    it('can post()', (done) => {
+      let object = {name:'boo', display_name:'bob'};
+      categories.post(object)
+        .then((record) => {
+          expect(record.name).toEqual(object.name);
+          done();
+        });
     });
 
-    it('can get()', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
+    it('can get()', (done) => {
+      let object = {name:'boo', display_name:'bob'};
+      let nextObj = {name:'JoJo', display_name:'sue'};
       categories.post(object);
-      categories.post(nextObj);
-      let record = categories.get();
-      expect(record.length).toEqual(2);
+      categories.get()
+        .then((record) => {
+          expect(record.length).toEqual(1);
+          done();
+        });
     });
 
-    it('can get(id)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      let item1 = categories.post(object);
-      categories.post(nextObj);
-      let records = categories.get(item1.id);
-      console.log(records, item1, item1.id);
-      expect(records[0].name).toEqual('boo');
+    it('can get(id)', (done) => {
+      let object = {name:'boo', display_name:'bob'};
+      let nextObj = {name:'JoJo', display_name:'sue'};
+      let item1 = categories.post(object)
+        .then(record => {
+          categories.get(item1.id)
+            .then((records) => {
+              expect(records[0].name).toEqual('boo');
+              done();
+            });
+          
+
+        });
     });
 
     it('can put(id, record)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      let item1 = categories.post(object);
-      categories.post(nextObj);
-      let records = categories.put(item1.id, {name:'billy'});
-      expect(records.name).toEqual('billy');
+      let object = {name:'boo', display_name:'bob'};
+      let nextObj = {name:'JoJo', display_name:'sue'};
+      let item1 = categories.post(object)
+        .then(record => {
+          categories.post(nextObj)
+            .then(records => {
+              categories.put(item1.id, {name:'billy'})
+                .then(record => {
+
+                  expect(records.name).toEqual('billy');
+                });
+
+            });
+
+        });
     });
 
     it('can delete(id)', () => {
-      let categories = new Categories();
-      let object = {name:'boo'};
-      let nextObj = {name:'JoJo'};
-      categories.post(nextObj);
-      let item = categories.post(object);
-      let record = categories.delete(item.id);
-      expect(record.length).toEqual(1);
+      let object = {name:'boo', display_name:'bob'};
+      let nextObj = {name:'JoJo', display_name:'sue'};
+      categories.post(nextObj)
+        .then(record => {
+          let item = categories.post(object)
+            .then(rec => {
+              categories.delete(item.id)
+                .then(data => {
+                  expect(record.length).toEqual(1);
+
+                });
+            });
+        });
     });
   });
 
   describe('products', () => {
     it('can get()', () => {
       let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
       products.post(obj)
         .then(record => {
           products.get()
@@ -74,7 +94,7 @@ describe('api server', () => {
 
     it('can get(id)', () => {
       let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
+
       let entry = products.post(obj)
         .then(record => {
           products.get(entry.id)
@@ -86,7 +106,7 @@ describe('api server', () => {
 
     it('can post(entry)', () => {
       let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
+
       return products.post(obj)
         .then(record => {
           expect(record.name).toEqual('Ilya');
@@ -96,7 +116,7 @@ describe('api server', () => {
     it('can put(id, entry)', () => {
       let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
       let nextObj = {name: 'Sue', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
+
       let entry = products.post(obj)
         .then(record => {
           products.put(entry.id, nextObj)
@@ -108,7 +128,7 @@ describe('api server', () => {
 
     it('delete(id)', () => {
       let obj = {name: 'Ilya', display_name: 'Ily boo', description: 'boo boo bee boo', category: 'person'};
-      let products = new Products();
+
       let entry = products.post(obj)
         .then(record => {
           products.delete(entry.id)

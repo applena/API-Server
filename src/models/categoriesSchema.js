@@ -17,7 +17,7 @@ categories.virtual('products', {
 });
 
 //hook or middleware for mongoose
-products.pre('find', function() {
+products.schema.pre('find', function() {
   //when I call a .find, this will run before the querry
   try {
     this.populate('products');//this will populate the virtual products
