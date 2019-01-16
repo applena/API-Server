@@ -8,7 +8,9 @@ const morgan = require('morgan');
 // Esoteric Resources
 const errorHandler = require( './middleware/error.js');
 const notFound = require( './middleware/404.js' );
-const apiRouter = require('../src/api/v1');
+const apiRouter = require('./api/v1');
+require('./models/categories');
+require('./models/products');
 
 // Prepare the express app
 const app = express();
@@ -24,7 +26,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(apiRouter);
 
 // Catchalls
-app.use(notFound);
+app.use('*', notFound);
 app.use(errorHandler);
 
 let isRunning = false;

@@ -1,15 +1,13 @@
 'use strict';
 
-const productsSchema = require('./productsSchema');
-
 class DataModel {
 
-  constructor() {
-    this.schema = productsSchema;
+  constructor(schema) {
+    this.schema = schema;
   }
 
-  get(id) {
-    let queryObject = id ? {id} : {};
+  get(_id) {
+    let queryObject = _id ? {_id} : {};
     return this.schema.find(queryObject);
   }
   
@@ -18,18 +16,12 @@ class DataModel {
     return newRecord.save();
   }
 
-  put(id, entry) {
-    let query = this.schema.find({id});
-    this.schema.deleteOne({query});
-    let newRecord = new this.schema(entry);
-    newRecord.id = id;
-    return newRecord.save();
+  put(_id, entry) {
+    return this.schema.updateOne({_id}, entry);
   }
 
-  delete(id) {
-    let query = this.schema.find({id});
-    this.schema.deleteOne({query});
-    return {};
+  delete(_id) {
+    return this.schema.deleteOne({_id});
   }
 
 }
