@@ -2,6 +2,7 @@
 language: node_js
 node_js:
   - "9"
-
+env:
+    - MONGOMS_DISABLE_POSTINSTALL=1
 script:
   - npm test
