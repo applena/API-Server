@@ -3,8 +3,6 @@ language: node_js
 node_js:
   - "9"
 env:
-  - MONGOMS_DEBUG=1
-  - MONGOMS_DISABLE_POSTINSTALL=1
   - MONGOMS_MD5_CHECK=0
 script:
   - npm test
