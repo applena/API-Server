@@ -17,9 +17,9 @@ const router = express.Router();
 
 let productsSchema = mongoose.model('products', mongoose.Schema({
   name: {type: String, required:true },
-  display_name: { type: String, required: true},
+  display_name: { type: String},
   description: { type: String, required: false },
-  category: { type: String, required: true, enum:['book', 'person', 'computer']},
+  category: { type: String, enum:['book', 'person', 'computer']},
 }));
 
 /** 
