@@ -139,6 +139,7 @@ router.get('/api/v1/products', (request,response,next) => {
 
 router.post('/api/v1/products', (request,response,next)=> {
   // expects the record that was just added to the database
+  console.log('post product', request.body);
   products.post(request.body)
     .then( result => response.status(200).json(result) )
     .catch( next );
