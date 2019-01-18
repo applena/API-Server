@@ -10,6 +10,7 @@ const uuid = require('uuid/v4');
 const mongoose = require('mongoose');
 const router = express.Router();
 
+
 /** 
  * mongo schema that verifies the user input and formats it correctly
  * @param {Object} object user entered entry
@@ -207,6 +208,7 @@ router.get('/api/v1/categories', (request,response,next) => {
 
 router.post('/api/v1/categories', (request,response,next)=> {
   // expects the record that was just added to the database
+  console.log(request.body);
   categories.post(request.body)
     .then( result => response.status(200).json(result) )
     .catch( next );
@@ -256,11 +258,11 @@ const app = express();
 // App Level MW
 app.use(cors());
 app.use(morgan('dev'));
-app.use(router);
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+app.use(router);
 // Catchalls
 app.use('*', notFound);
 app.use(errorHandler);
@@ -312,6 +314,7 @@ function notFound (req,res,next) {
 */
 
 function errorHandler (err, req, res, next) {
+  console.error(err);
   let error = { error: err };
   res.statusCode = 500;
   res.statusMessage = 'Server Error';
