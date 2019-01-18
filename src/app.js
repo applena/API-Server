@@ -200,8 +200,7 @@ router.get('/api/v1/categories', (request,response,next) => {
 
 router.post('/api/v1/categories', (request,response,next)=> {
   // expects the record that was just added to the database
-  console.log(request.body);
-  response.status(200).json(categories.post() )
+  response.status(200).json(categories.post(request.body));
 });
 
 /** 
