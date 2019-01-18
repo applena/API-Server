@@ -9,9 +9,9 @@
 * [repo](https://github.com/applena/API-Server)
 * [travis](https://travis-ci.com/applena/API-Server.svg?branch=master)
 * [heroku - pretty code](https://eivy-lab-13-pretty.herokuapp.com) (when applicable)
-* [heroku - ulgy code](https://eivy-lab-13-ulgy.herokuapp.com/) (when applicable)
-* [travis - lab 14](https://travis-ci.com/applena/API-Server.svg?branch=master)
-* [heroku - master](https://eivy-lab-14.herokuapp.com/)
+* [heroku - ulgy code - products](https://eivy-lab-13-ulgy.herokuapp.com/api/v1/products) (when applicable)
+* [heroku - ulgy code - categories](* [heroku - ulgy code - categories](https://eivy-lab-13-ulgy.herokuapp.com/api/v1/categories) (when applicable)
+
 
 #### Documentation
 * [swagger](./docs/swagger.json) (API assignments only)
