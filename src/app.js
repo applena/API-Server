@@ -79,7 +79,7 @@ class Categories {
   get(_id) {
     let response = _id ? this.database.filter(record => {
       return record.id === _id;
-    }) : this.database; 
+    })[0] : this.database; 
     return response;
   }
   
@@ -190,15 +190,7 @@ router.delete('/api/v1/products/:id', (request,response,next)=> {
 
 router.get('/api/v1/categories', (request,response,next) => {
   // expects an array of object to be returned from the model
-  categories.get()
-    .then( data => {
-      const output = {
-        count: data.length,
-        results: data,
-      };
-      response.status(200).json(output);
-    })
-    .catch( next );
+  response.status(200).json(categories.get());
 });
 
 /** 
@@ -209,9 +201,7 @@ router.get('/api/v1/categories', (request,response,next) => {
 router.post('/api/v1/categories', (request,response,next)=> {
   // expects the record that was just added to the database
   console.log(request.body);
-  categories.post(request.body)
-    .then( result => response.status(200).json(result) )
-    .catch( next );
+  response.status(200).json(categories.post() )
 });
 
 /** 
@@ -221,9 +211,7 @@ router.post('/api/v1/categories', (request,response,next)=> {
 
 router.get('/api/v1/categories/:id', (request,response,next) => {
   // expects an array with the one matching record from the model
-  categories.get(request.params.id)
-    .then( result => response.status(200).json(result[0]) )
-    .catch( next );
+  response.status(200).json(categories.get(request.params.id));
 });
 
 /** 
@@ -234,9 +222,8 @@ router.get('/api/v1/categories/:id', (request,response,next) => {
 
 router.put('/api/v1/categories/:id', (request,response,next)=> {
   // expects the record that was just updated in the database
-  categories.put(request.params.id, request.body)
-    .then( result => response.status(200).json(result) )
-    .catch( next );
+  let category = categories.put(request.params.id, request.body);
+  response.status(200).json(category);
 });
 
 
@@ -247,9 +234,8 @@ router.put('/api/v1/categories/:id', (request,response,next)=> {
 
 router.delete('/api/v1/categories/:id', (request,response,next) =>{
   // Expects no return value (resource was deleted)
-  categories.delete(request.params.id)
-    .then( result => response.status(200).json(result) )
-    .catch( next );
+  let category = categories.delete(request.params.id);
+  response.status(200).json(category);
 });
 
 // Prepare the express app
