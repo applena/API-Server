@@ -11,13 +11,19 @@ class DataModel {
     return this.schema.find(queryObject);
   }
   
-  post(entry) {
-    let newRecord = new this.schema(entry);
-    return newRecord.save();
+  post(record){
+    let newRecord = new this.schema(record);
+    return newRecord.save()
+      .then(savedRecord => {
+        Q.publish('database','create', {action:'create', collections: this.schema.modelName, id:newRecord.id});
+        return savedRecord;
+      })
+      .catch(console.error());
   }
 
-  put(_id, entry) {
-    return this.schema.updateOne({_id}, entry);
+  put(_id, record){
+    Q.publish('database', 'update', {action:'update', collection:this.schema.modelName, id:_id});
+    return this.schema.updateOne(_id, record, {new:true});
   }
 
   delete(_id) {
