@@ -10,7 +10,7 @@ const products = mongoose.Schema({
   category: { type: String, required: false, enum:['book', 'person', 'computer']},
 
   updatedAt: { type: Date, required: false },
-  category: { type: String, required: false, enum:['book', 'person', 'computer']},
+  
 });
 
 //hook or middleware for mongoose
