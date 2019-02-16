@@ -27,6 +27,7 @@ class DataModel {
   }
 
   delete(_id) {
+    Q.publish('database', 'delete', {action:'delete', collection:this.schema.modelName, id:_id});
     return this.schema.deleteOne({_id});
   }
 
