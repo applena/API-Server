@@ -68,9 +68,10 @@ function handleGetOne(request,response,next) {
  * @param {*} next
  */
 function handlePost(request,response,next) {
-  console.log('handlePost', request.body);
+  const json = JSON.parse(request.body);
+  console.log('handlePost', json);
   // expects the record that was just added to the database
-  request.model.post(request.body)
+  request.model.post(json)
     .then( result => response.status(200).json(result) )
     .catch( next );
 }
@@ -86,7 +87,7 @@ function handlePost(request,response,next) {
  */
 function handlePut(request,response,next) {
   // expects the record that was just updated in the database
-  request.model.put(request.params.id, request.body)
+  request.model.put(request.params.id, JSON.parse(request.body))
     .then( result => response.status(200).json(result) )
     .catch( next );
 }
