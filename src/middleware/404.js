@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = (req,res,next) => {
+  console.error('404');
   let error = { error: 'Resource Not Found' };
   res.statusCode = 404;
   res.statusMessage = 'Not Found';

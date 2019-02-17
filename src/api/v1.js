@@ -68,6 +68,7 @@ function handleGetOne(request,response,next) {
  * @param {*} next
  */
 function handlePost(request,response,next) {
+  console.log('handlePost', request.body);
   // expects the record that was just added to the database
   request.model.post(request.body)
     .then( result => response.status(200).json(result) )

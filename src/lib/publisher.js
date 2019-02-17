@@ -7,10 +7,10 @@ class Q {
   constructor(q) {
     console.log(`connecting to socket io server ${SERVER}`);
     this.q = io.connect(`${SERVER}`);
-    io.on('event', function(data){
+    this.q.on('event', function(data){
       console.log('io event', data);
     });
-    io.on('disconnect', function(){
+    this.q.on('disconnect', function(){
       console.log('io disconnect');
     });
   }
