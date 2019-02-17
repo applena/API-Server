@@ -24,7 +24,7 @@ class DataModel {
 
   put(_id, record){
     Q.publish('database', 'update', {action:'update', collection:this.schema.modelName, id:_id});
-    return this.schema.updateOne(_id, record, {new:true});
+    return this.schema.updateOne({_id}, record, {new:true});
   }
 
   delete(_id) {
